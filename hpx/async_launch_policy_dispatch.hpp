@@ -97,10 +97,22 @@ namespace hpx { namespace detail
                     // make sure this thread is executed last
                     // yield_to
                     hpx::this_thread::suspend(threads::pending, tid,
-                        "async_launch_policy_dispatch<fork>");
+                        "async_launch_policy_dispatch<launch>");
                 }
             }
             return p.get_future();
+        }
+
+        template <typename F, typename... Ts>
+        HPX_FORCEINLINE static typename std::enable_if<
+            traits::detail::is_deferred_invocable<F, Ts...>::value,
+            hpx::future<typename util::detail::invoke_deferred_result<F,
+                Ts...>::type>>::type
+        call(launch policy, threads::thread_schedule_hint hint, F&& f,
+            Ts&&... ts)
+        {
+            return call(policy, threads::detail::get_self_or_default_pool(),
+                hint, std::forward<F>(f), std::forward<Ts>(ts)...);
         }
 
         template <typename F, typename... Ts>

@@ -8,6 +8,8 @@
 #ifndef HPX_RUNTIME_THREADS_COROUTINES_DETAIL_GET_STACK_POINTER_HPP
 #define HPX_RUNTIME_THREADS_COROUTINES_DETAIL_GET_STACK_POINTER_HPP
 
+#include <hpx/config/compiler_specific.hpp>
+
 #if !defined(HPX_WINDOWS)
 #if defined(HPX_GCC_VERSION)
 #define HPX_HAVE_THREADS_GET_STACK_POINTER
@@ -23,6 +25,7 @@
 #include <limits>
 
 namespace hpx { namespace threads { namespace coroutines { namespace detail {
+
     inline std::size_t get_stack_ptr()
     {
 #if defined(HPX_GCC_VERSION)
@@ -45,6 +48,8 @@ namespace hpx { namespace threads { namespace coroutines { namespace detail {
     }
 }}}}    // namespace hpx::threads::coroutines::detail
 
+#else
+#define HPX_HAVE_THREADS_GET_STACK_POINTER
 #endif
 
 #endif /*HPX_RUNTIME_THREADS_COROUTINES_DETAIL_GET_STACK_POINTER_HPP*/
